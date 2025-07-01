@@ -1,39 +1,40 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# IntelliJ IDEA related files
+.idea/
 *.iml
+*.iws
 *.ipr
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Ignore specific IntelliJ IDEA VCS settings
+.idea/vcs.xml
 
-### VS Code ###
-.vscode/
+# Local history files
+.history/
 
-### Ignore all gradle files ###
+# Compiled Java classes
+bin/
+out/
+target/
+
+# Packaging files
+*.jar
+*.war
+*.ear
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Project specific - adjust as needed
+# If you have a 'lib' folder with external JARs that you *don't* want to track
+# lib/
+
+# Gradle specific (if you're using Gradle)
 .gradle/
-/gradle/libs.versions.toml
-### Ignore all maven files ###
-.mvn/
+build/
+
+# NetBeans specific (if you happen to have these)
+nbproject/
+
+# Ignore toml files
+*.toml
