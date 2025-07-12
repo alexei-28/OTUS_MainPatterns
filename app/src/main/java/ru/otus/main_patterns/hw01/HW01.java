@@ -1,9 +1,5 @@
 package ru.otus.main_patterns.hw01;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ru.otus.main_patterns.App;
-
 /*-
     Домашнее задание:
     Разработать набор модульных тестов.
@@ -32,7 +28,8 @@ import ru.otus.main_patterns.App;
 
     Если D < 0, то уравнение не имеет действительных корней.
 
-    Пример: для уравнения x^2 + 5x + 6 = 0
+    Пример:
+    для уравнения x^2 + 5x + 6 = 0
     a = 1, b = 5, c = 6
     Дискриминант D = 25 - 24 = 1 > 0. Значит имеем два корня.
     Корни уравнения:
@@ -45,10 +42,36 @@ import ru.otus.main_patterns.App;
 
  */
 public class HW01 {
-    private static final Logger logger = LoggerFactory.getLogger(HW01.class);
+    public static final double EPSILON = 1e-7; // Приемлемое значение для проверки на ноль
 
-    public double[] solve(double a, double b, double c) {
-       return null; // TODO: Реализовать метод нахождения корней квадратного уравнения
+    public double[] solve(Double a, double b, double c) {
+        if (isEqualToZero(a)) {
+            throw new IllegalArgumentException("Коэффициент 'а' не может быть равен нулю.");
+        }
+        if (Double.isNaN(a) || Double.isNaN(b) || Double.isNaN(c)) {
+            throw new IllegalArgumentException("Коэффициент не может быть равен NaN.");
+        }
+
+        if (Double.isInfinite(a) || Double.isInfinite(b) || Double.isInfinite(c)) {
+            throw new IllegalArgumentException("Коэффициент не может быть равен бесконечности.");
+        }
+
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0) {
+            return new double[0]; // No real roots
+        } else if (isEqualToZero(discriminant)) {
+            double root = -b / (2 * a);
+            return new double[]{root}; // One real root
+        } else {
+            double sqrtD = Math.sqrt(discriminant);
+            double root1 = (-b + sqrtD) / (2 * a);
+            double root2 = (-b - sqrtD) / (2 * a);
+            return new double[]{root1, root2}; // Two real roots
+        }
+    }
+
+    private boolean isEqualToZero(double number) {
+        return Math.abs(number) <= EPSILON; // Приемлемое значение на равенство 0
     }
 
 }
