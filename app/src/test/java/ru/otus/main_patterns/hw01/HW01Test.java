@@ -14,12 +14,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /*-
  Run a Specific Test Class:
-
     ./gradlew :app:test --tests "ru.otus.main_patterns.hw01.HW01Test"
 
 Run a Specific Test Method within a Class
     ./gradlew :app:test --tests "ru.otus.main_patterns.hw01.HW01Test.should_return_empty_array"
-
 */
 
 public class HW01Test {
