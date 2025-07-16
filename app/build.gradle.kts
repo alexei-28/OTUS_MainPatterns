@@ -1,7 +1,6 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-    id("io.spring.dependency-management") version "1.1.4"
 }
 
 repositories {
@@ -31,25 +30,26 @@ java {
     }
 }
 
-extra["guavaVersion"] = "33.0.0-jre"
+val junitVersion = "5.10.0"
+val slf4jVersion = "2.0.7"
+val log4jVersion = "2.20.0"
+val assertJVersion = "3.27.3"
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.5.3")
-    }
 
-}
 dependencies {
-    implementation("org.slf4j:slf4j-api")
-    implementation("com.google.guava:guava:${property("guavaVersion")}")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl")
-    runtimeOnly("org.apache.logging.log4j:log4j-core")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
+    runtimeOnly("org.apache.logging.log4j:log4j-core:$log4jVersion")
 
-    testImplementation("junit:junit")
-    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.assertj:assertj-core:$assertJVersion")
 }
 
+tasks.named<Test>("test") {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
 
 tasks.test {
     testLogging {
