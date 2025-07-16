@@ -8,9 +8,9 @@ Java version: 1.8.0_38
 
 Build tool: Gradle 8.10
 
-Build project: `./gradlew build`
+Build project: `./gradlew clean build`
 
-Run tests: `./gradlew test`
+Run tests: `./gradlew clean test`
 
 Run application: `./gradlew run`
 

@@ -7,5 +7,6 @@ public class App {
     public static void main(String[] args) {
         logger.info("Java version: {}, Java vendor: {}", System.getProperty("java.version")
                 , System.getProperty("java.vendor"));
+
     }
 }
