@@ -35,7 +35,6 @@ val slf4jVersion = "2.0.7"
 val log4jVersion = "2.20.0"
 val assertJVersion = "3.27.3"
 
-
 dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
@@ -49,12 +48,4 @@ dependencies {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
-}
-
-tasks.test {
-    testLogging {
-        events("passed", "skipped", "failed")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-        showStandardStreams = true
-    }
 }
