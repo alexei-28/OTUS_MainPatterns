@@ -8,7 +8,7 @@ repositories {
 }
 
 group = "ru.otus.main_patterns"
-version = "1.0.1"
+version = "1.0.2-SNAPSHOT"
 
 application {
     mainClass.set("ru.otus.main_patterns.App")
@@ -30,10 +30,11 @@ java {
     }
 }
 
-val junitVersion = "5.10.0"
-val slf4jVersion = "2.0.7"
-val log4jVersion = "2.20.0"
 val assertJVersion = "3.27.3"
+val junitVersion = "5.10.0"
+val log4jVersion = "2.20.0"
+val mockitoVersion = "4.4.0"
+val slf4jVersion = "2.0.7"
 
 dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
@@ -41,8 +42,10 @@ dependencies {
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     runtimeOnly("org.apache.logging.log4j:log4j-core:$log4jVersion")
 
+    testImplementation("org.assertj:assertj-core:${assertJVersion}")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
-    testImplementation("org.assertj:assertj-core:$assertJVersion")
+    testImplementation("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
 }
 
 tasks.named<Test>("test") {
