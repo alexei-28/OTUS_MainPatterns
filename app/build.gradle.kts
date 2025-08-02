@@ -36,7 +36,6 @@ val log4jVersion = "2.20.0"
 val mockitoVersion = "4.4.0"
 val slf4jVersion = "2.0.7"
 
-
 dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
