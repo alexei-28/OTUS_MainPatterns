@@ -38,3 +38,5 @@ nbproject/
 
 # Ignore toml files
 *.toml
+
+/logs/app.log
