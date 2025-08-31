@@ -8,7 +8,7 @@ repositories {
 }
 
 group = "ru.otus.main_patterns"
-version = "1.0.2"
+version = "1.0.3-SNAPSHOT"
 
 application {
     mainClass.set("ru.otus.main_patterns.App")
@@ -30,22 +30,30 @@ java {
     }
 }
 
-val assertJVersion = "3.27.3"
-val junitVersion = "5.10.0"
+val fasterxml = "2.19.2"
+val guavaTableVersion = "33.0.0-jre"
 val log4jVersion = "2.20.0"
-val mockitoVersion = "4.4.0"
-val slf4jVersion = "2.0.7"
+val awaitilityVersion = "4.3.0"
 
 dependencies {
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    // Import the Spring Boot BOM using the platform() function (compatible Java 8)
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.18"))
+
+    // Declare dependencies without specifying versions
+    implementation("org.slf4j:slf4j-api")
+
+    // Declare dependencies without specifying versions
+    implementation("com.google.guava:guava:$guavaTableVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$fasterxml")
 
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
-    runtimeOnly("org.apache.logging.log4j:log4j-core:$log4jVersion")
+    runtimeOnly("org.apache.logging.log4j:log4j-core")
 
-    testImplementation("org.assertj:assertj-core:${assertJVersion}")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
-    testImplementation("org.mockito:mockito-core:$mockitoVersion")
-    testImplementation("org.mockito:mockito-junit-jupiter:$mockitoVersion")
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.awaitility:awaitility:$awaitilityVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 tasks.named<Test>("test") {
