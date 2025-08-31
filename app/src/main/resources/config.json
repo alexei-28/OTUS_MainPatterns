@@ -1,0 +1,19 @@
+  {
+    "handlers": [
+      {
+        "command": "ru.otus.main_patterns.hw03.command.MoveCommand",
+        "exception": "ru.otus.main_patterns.hw03.exception.GetPositionException",
+        "handler": "ru.otus.main_patterns.hw03.handler.LogHandlerException"
+      },
+      {
+        "command": "ru.otus.main_patterns.hw03.command.RotateCommand",
+        "exception": "ru.otus.main_patterns.hw03.exception.GetAngelException",
+        "handler": "ru.otus.main_patterns.hw03.handler.DeleteObjectHandlerException"
+      },
+      {
+        "command": "ru.otus.main_patterns.hw03.command.LogCommand",
+        "exception": "ru.otus.main_patterns.hw03.exception.GetAngelException",
+        "handler": "ru.otus.main_patterns.hw03.handler.DeleteObjectHandlerException"
+      }
+    ]
+  }
