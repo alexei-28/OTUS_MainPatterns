@@ -104,11 +104,12 @@ SOLID вариант команды это:
     - Когда вам нужна операция отмены
 */
 public class HW04 {
-    private static final Logger logger = LoggerFactory.getLogger(HW04.class);
+  private static final Logger logger = LoggerFactory.getLogger(HW04.class);
 
-    public static void main(String[] args) {
-        logger.info("Java version: {}, Java vendor: {}\nДомашнее задание: Макрокоманды",
-                System.getProperty("java.version"), System.getProperty("java.vendor"));
-
-    }
+  public static void main(String[] args) {
+    logger.info(
+        "Java version: {}, Java vendor: {}\nДомашнее задание: Макрокоманды",
+        System.getProperty("java.version"),
+        System.getProperty("java.vendor"));
+  }
 }

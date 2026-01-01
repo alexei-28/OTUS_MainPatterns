@@ -12,18 +12,18 @@ import ru.otus.main_patterns.hw04.model.Direction;
 объекты команд можно сделать неизменяемым, предавая в них все необходимые параметры только через конструктор.
 */
 public class ChangeVelocityCommand implements Command {
-    private final Rotatable rotatable;
-    private static final Logger logger = LoggerFactory.getLogger(ChangeVelocityCommand.class);
+  private final Rotatable rotatable;
+  private static final Logger logger = LoggerFactory.getLogger(ChangeVelocityCommand.class);
 
-    public ChangeVelocityCommand(Rotatable rotatable) {
-        this.rotatable = rotatable;
-    }
+  public ChangeVelocityCommand(Rotatable rotatable) {
+    this.rotatable = rotatable;
+  }
 
-    @Override
-    public void execute() throws InterruptedException {
-        logger.debug("Execute");
-        Direction direction = rotatable.getDirection();
-        Direction nextDirection = direction.next(rotatable.getAngularVelocity());
-        rotatable.setDirection(nextDirection);
-    }
+  @Override
+  public void execute() throws InterruptedException {
+    logger.debug("Execute");
+    Direction direction = rotatable.getDirection();
+    Direction nextDirection = direction.next(rotatable.getAngularVelocity());
+    rotatable.setDirection(nextDirection);
+  }
 }

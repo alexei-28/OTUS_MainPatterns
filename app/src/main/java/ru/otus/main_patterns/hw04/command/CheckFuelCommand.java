@@ -16,21 +16,21 @@ import ru.otus.main_patterns.hw04.interfaces.Fuelable;
 Должен принять на вход интерфейс(Fuelable), который поддерживает получение информации о том сколько сейчас есть топлива и сколько будет израсходовано топлива.
 */
 public class CheckFuelCommand implements Command {
-    private final Fuelable fuelable;
+  private final Fuelable fuelable;
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckFuelCommand.class);
+  private static final Logger logger = LoggerFactory.getLogger(CheckFuelCommand.class);
 
-    public CheckFuelCommand(Fuelable fuelable) {
-        this.fuelable = fuelable;
+  public CheckFuelCommand(Fuelable fuelable) {
+    this.fuelable = fuelable;
+  }
+
+  @Override
+  public void execute() {
+    logger.debug("Execute");
+    Fuel fuel = fuelable.getFuel();
+    Fuel consumedFuel = fuelable.getConsumedFuel();
+    if (fuel.getValue() - consumedFuel.getValue() < 0) {
+      throw new NotEnoughFuelException();
     }
-
-    @Override
-    public void execute() {
-        logger.debug("Execute");
-        Fuel fuel = fuelable.getFuel();
-        Fuel consumedFuel = fuelable.getConsumedFuel();
-        if (fuel.getValue() - consumedFuel.getValue() < 0) {
-            throw new NotEnoughFuelException();
-        }
-    }
+  }
 }

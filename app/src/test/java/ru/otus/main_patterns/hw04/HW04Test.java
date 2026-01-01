@@ -9,11 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 */
 class HW04Test {
 
-    @BeforeEach
-    void setUp() {
-    }
+  @BeforeEach
+  void setUp() {}
 
-    @AfterEach
-    void tearDown() {
-    }
+  @AfterEach
+  void tearDown() {}
 }

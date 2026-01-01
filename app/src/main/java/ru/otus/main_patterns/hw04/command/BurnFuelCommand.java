@@ -13,20 +13,20 @@ import ru.otus.main_patterns.hw04.interfaces.Fuelable;
 
  Просто изменяем значение топлива на некоторое значение.
 */
-public class BurnFuelCommand implements Command{
-    private final Fuelable fuelable;
+public class BurnFuelCommand implements Command {
+  private final Fuelable fuelable;
 
-    private static final Logger logger = LoggerFactory.getLogger(BurnFuelCommand.class);
+  private static final Logger logger = LoggerFactory.getLogger(BurnFuelCommand.class);
 
-    public BurnFuelCommand(Fuelable fuelable) {
-        this.fuelable = fuelable;
-    }
+  public BurnFuelCommand(Fuelable fuelable) {
+    this.fuelable = fuelable;
+  }
 
-    @Override
-    public void execute() {
-        logger.debug("Execute");
-        Fuel fuel = fuelable.getFuel();
-        Fuel consumedFuel = fuelable.getConsumedFuel();
-        fuelable.setFuel(new Fuel(fuel.getValue() - consumedFuel.getValue()));
-    }
+  @Override
+  public void execute() {
+    logger.debug("Execute");
+    Fuel fuel = fuelable.getFuel();
+    Fuel consumedFuel = fuelable.getConsumedFuel();
+    fuelable.setFuel(new Fuel(fuel.getValue() - consumedFuel.getValue()));
+  }
 }
