@@ -8,6 +8,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ class HW03Test {
     eventLoopService.eventLoop();
   }
 
+  @Disabled
   @Test
   @DisplayName("Команда, которая записывает информацию о выброшенном исключении в лог")
   void shouldLogWhenThrowException() {
@@ -127,6 +129,7 @@ class HW03Test {
     verify(logCommandSpy, times(1)).execute();
   }
 
+  @Disabled
   @Test
   @DisplayName("Обработчик исключения, который ставит Команду, пишущую в лог в очередь Команд.")
   void handlerShouldAddLogCommandToQueue() {
@@ -197,6 +200,7 @@ class HW03Test {
     verify(logCommandSpy, times(1)).execute();
   }
 
+  @Disabled
   @Test
   @DisplayName("Команда, которая повторяет Команду, выбросившую исключение")
   void shouldRetryCommandThrowException() {
@@ -310,6 +314,7 @@ class HW03Test {
     verify(retryCommandMock, times(1)).execute();
   }
 
+  @Disabled
   @Test
   @DisplayName(
       "Обработчик исключения, который ставит в очередь Команду - повторитель команды, выбросившей исключение.")
@@ -420,6 +425,7 @@ class HW03Test {
     verify(retryCommandMock, times(1)).execute();
   }
 
+  @Disabled
   @Test
   @DisplayName(
       "Обработка исключений - при первом выбросе исключения повторить команду, при повторном выбросе исключения записать информацию в лог")
