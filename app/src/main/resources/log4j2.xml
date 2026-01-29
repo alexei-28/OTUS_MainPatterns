@@ -14,14 +14,15 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${patterLayout}"/>
         </Console>
+        <!--
         <File name="File" fileName="logs/app.log" append="false">
             <PatternLayout pattern="${patterLayout}"/>
-        </File>
+        </File> -->
     </Appenders>
     <Loggers>
         <Root level="ALL">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
+            <!--<AppenderRef ref="File"/>-->
         </Root>
     </Loggers>
 </Configuration>
