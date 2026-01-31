@@ -34,6 +34,7 @@ val fasterxml = "2.19.2"
 val guavaTableVersion = "33.0.0-jre"
 val log4jVersion = "2.20.0"
 val awaitilityVersion = "4.3.0"
+val mockitoVersion = "4.11.0"
 
 dependencies {
     // Import the Spring Boot BOM using the platform() function (compatible Java 8)
@@ -54,6 +55,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.mockito:mockito-junit-jupiter")
+    testImplementation("org.mockito:mockito-inline:$mockitoVersion")
 }
 
 tasks.named<Test>("test") {
