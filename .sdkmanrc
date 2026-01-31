@@ -9,4 +9,4 @@
 #
 
 java=jdk1.8.0_381
-gradle=8.10
+gradle=8.0
