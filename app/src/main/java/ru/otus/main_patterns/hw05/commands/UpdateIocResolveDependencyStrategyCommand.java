@@ -17,8 +17,8 @@ public class UpdateIocResolveDependencyStrategyCommand implements Command {
 
   public UpdateIocResolveDependencyStrategyCommand(
       Function<BiFunction<String, Object[], Object>, BiFunction<String, Object[], Object>>
-          updater) {
-    this.updateIoCStrategy = updater;
+          updateIoCStrategy) {
+    this.updateIoCStrategy = updateIoCStrategy;
   }
 
   @Override

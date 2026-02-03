@@ -1,12 +1,14 @@
 package ru.otus.main_patterns.hw05.core;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import org.apache.commons.beanutils.ConstructorUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.BeforeEach;
 import ru.otus.main_patterns.hw05.commands.UpdateIocResolveDependencyStrategyCommand;
@@ -106,13 +108,13 @@ class IoCTest {
   }
 
   @Test
-  @DisplayName("Full cycle: update IoC strategy and create User instance")
-  void shouldUpdateStrategyAndCreateUser() {
-    // 1. ПОДГОТОВКА: Создаем хранилище для будущих стратегий
+  @DisplayName("Should create instance of User when IoC resolve exist dependency")
+  void shouldCreateInstanceOfUserByIoC() {
+    // Arrange
+    // Создаем хранилище для будущих стратегий
     ConcurrentHashMap<String, Function<Object[], Object>> scopesMap = new ConcurrentHashMap<>();
-
-    // 2. ШАГ 1: Обновляем базовую стратегию IoC, чтобы она умела искать в нашем scopesMap.
-    // Используем встроенную команду "update.ioc.resolve.dependency.strategy"
+    // Обновляем базовую стратегию("update.ioc.resolve.dependency.strategy") IoC, чтобы она умела
+    // искать в нашем scopesMap.
     UpdateIocResolveDependencyStrategyCommand updateCmd =
         IoC.resolve(
             "update.ioc.resolve.dependency.strategy",
@@ -126,36 +128,85 @@ class IoCTest {
                       return oldStrategy.apply(dependency, args);
                     });
     updateCmd.execute();
-
-    // 3. ШАГ 2: Регистрируем стратегию создания User (через Reflection из строки)
+    // Регистрируем стратегию создания User
+    String dependencyName = "ru.otus.main_patterns.hw05.model.User";
     scopesMap.put(
-        "User",
+        dependencyName,
         args -> {
           try {
-            return createInstance("ru.otus.main_patterns.hw05.model.User");
+            return ConstructorUtils.invokeConstructor(Class.forName(dependencyName), args);
           } catch (Exception e) {
-            throw new RuntimeException("Failed to create instance of " + args[0], e);
+            throw new RuntimeException("Failed to create instance of " + dependencyName, e);
           }
         });
 
-    // 4. ДЕЙСТВИЕ: Вызываем resolve для User
-    User user = IoC.resolve("User");
-
-    // 5. ПРОВЕРКА
-    assertThat(user)
+    //  Act: Вызываем resolve для User
+    String userName = "John";
+    int userAge = 30;
+    User userFirst = IoC.resolve(dependencyName, userName, userAge);
+    //  Assert
+    assertThat(userFirst)
         .as("IoC should return a non-null User instance")
         .isNotNull()
         .isInstanceOf(User.class);
+    assertThat(userFirst.getName()).isEqualTo(userName);
+    assertThat(userFirst.getAge()).isEqualTo(userAge);
+
+    // Act: Вызываем resolve для User с другими параметрами
+    userName = "Alexei";
+    userAge = 45;
+    User userSecond = IoC.resolve(dependencyName, userName, userAge);
+    assertThat(userSecond)
+        .as("IoC should return a non-null User instance")
+        .isNotNull()
+        .isInstanceOf(User.class);
+    assertThat(userSecond.getName()).isEqualTo(userName);
+    assertThat(userSecond.getAge()).isEqualTo(userAge);
+
+    // Ensure that two different instances are created
+    assertThat(userFirst).isNotSameAs(userSecond);
   }
 
-  private Object createInstance(String className, Object... args) throws Exception {
-    Class<?> clazz = Class.forName(className);
-    // Получаем типы из переданных аргументов
-    Class<?>[] parameterTypes = new Class<?>[args.length];
-    for (int i = 0; i < args.length; i++) {
-      parameterTypes[i] = args[i].getClass();
-    }
-    // Ищем конструктор, соответствующий типам аргументов
-    return clazz.getDeclaredConstructor(parameterTypes).newInstance(args);
+  @Test
+  @DisplayName("Should throw exception when IoC try to resolve not exist dependency")
+  void shouldThrowExceptionWhenResolveNotExistDependency() {
+    // Arrange
+    // Создаем хранилище для будущих стратегий
+    ConcurrentHashMap<String, Function<Object[], Object>> scopesMap = new ConcurrentHashMap<>();
+    // Обновляем базовую стратегию("update.ioc.resolve.dependency.strategy") IoC, чтобы она умела
+    // искать в нашем scopesMap.
+    UpdateIocResolveDependencyStrategyCommand updateCmd =
+        IoC.resolve(
+            "update.ioc.resolve.dependency.strategy",
+            (Function<BiFunction<String, Object[], Object>, BiFunction<String, Object[], Object>>)
+                oldStrategy ->
+                    (dependency, args) -> {
+                      if (scopesMap.containsKey(dependency)) {
+                        Function<Object[], Object> strategy = scopesMap.get(dependency);
+                        return strategy.apply(args);
+                      }
+                      return oldStrategy.apply(dependency, args);
+                    });
+    updateCmd.execute();
+    // Регистрируем стратегию создания User
+    String dependencyName = "ru.otus.main_patterns.hw05.model.User";
+    scopesMap.put(
+        dependencyName,
+        args -> {
+          try {
+            return ConstructorUtils.invokeConstructor(Class.forName(dependencyName), args);
+          } catch (Exception e) {
+            throw new RuntimeException("Failed to create instance of " + dependencyName, e);
+          }
+        });
+
+    // Act: Вызываем resolve для несуществующей зависимости "Person"
+    String notExistDependency = "Person";
+    assertThatThrownBy(
+            () -> {
+              IoC.resolve(notExistDependency, "Bob", 54);
+            })
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Dependency " + notExistDependency + " is not found.");
   }
 }

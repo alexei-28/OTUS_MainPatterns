@@ -110,12 +110,12 @@ public class IoC {
         public Object apply(String dependency, Object[] args) {
           if ("update.ioc.resolve.dependency.strategy".equals(dependency)) {
             Function<BiFunction<String, Object[], Object>, BiFunction<String, Object[], Object>>
-                arg =
+                updateIoCStrategy =
                     (Function<
                             BiFunction<String, Object[], Object>,
                             BiFunction<String, Object[], Object>>)
                         args[0];
-            return new UpdateIocResolveDependencyStrategyCommand(arg);
+            return new UpdateIocResolveDependencyStrategyCommand(updateIoCStrategy);
           } else {
             throw new IllegalArgumentException(
                 String.format("Dependency %s is not found.", dependency));
