@@ -201,7 +201,7 @@ class IoCTest {
         });
 
     // Act: Вызываем resolve для несуществующей зависимости "Person"
-    String notExistDependency = "Person";
+    String notExistDependency = "ru.otus.main_patterns.hw05.model.Person";
     assertThatThrownBy(
             () -> {
               IoC.resolve(notExistDependency, "Bob", 54);
