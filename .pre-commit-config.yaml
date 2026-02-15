@@ -1,27 +1,20 @@
-default_stages: [pre-commit]
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+  # Проверка кода через Gradle + Spotless
+  - repo: local
     hooks:
-      - id: trailing-whitespace    # Removes extra spaces at the end of lines
-      - id: end-of-file-fixer      # Ensures files end with a newline
-      - id: check-yaml             # Validates YAML syntax
-      - id: check-added-large-files # Prevents committing huge files (>500kb)
-  - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.6
-    hooks:
-      - id: remove-crlf
-      - id: remove-tabs
-        args: [ --whitespaces-count=2 ]
-  - repo: https://github.com/extenda/pre-commit-hooks
-    rev: v0.4
-    hooks:
-      - id: google-java-formatter
-      - id: commitlint
-        stages: [ commit-msg ]
+      - id: spotless
+        name: spotless formatter
+        entry: ./gradlew spotlessApply
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # Conventional commits - https://www.conventionalcommits.org
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.0.0
+    rev: v3.0.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
-        args: [feat, fix, chore, docs, style, refactor, test, perf]
+        args: []
+        # Можно настроить свои типы
+        # args: [feat, fix, chore, refactor, test, docs]
