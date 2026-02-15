@@ -1,6 +1,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("com.diffplug.spotless") version "6.13.0"
 }
 
 repositories {
@@ -37,7 +38,6 @@ val log4jVersion = "2.20.0"
 val awaitilityVersion = "4.3.0"
 val mockitoVersion = "4.11.0"
 
-
 dependencies {
     // Import the Spring Boot BOM using the platform() function (compatible Java 8)
     implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.18"))
@@ -64,4 +64,21 @@ dependencies {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+// Format code
+spotless {
+    java {
+        target("src/**/*.java")
+        // Версия 1.7 — последняя с поддержкой Java 8
+        googleJavaFormat("1.7")
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
+    }
 }

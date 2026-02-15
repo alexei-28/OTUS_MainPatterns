@@ -2,11 +2,13 @@
 # Add key=value pairs of SDKs to use below
 
 # JDK and class file format version:
+# Java SE 25 = 69
 # Java SE 21 = 65
 # Java SE 17 = 61 (0x3D hex)
 # Java SE 11 = 55 (0x37 hex)
 # Java SE 8  = 52 (0x34 hex)
 #
 
+#java=25.0.2-oracle
 java=jdk1.8.0_381
-gradle=8.0
+gradle=8.14.4
