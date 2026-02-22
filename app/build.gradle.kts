@@ -38,6 +38,7 @@ val log4jVersion = "2.20.0"
 val awaitilityVersion = "4.3.0"
 val mockitoVersion = "4.11.0"
 val javapoetVersion = "1.13.0"
+val equalsverifierVersion = "3.16.1"
 
 dependencies {
     annotationProcessor(project(":processor"))
@@ -54,6 +55,7 @@ dependencies {
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
     runtimeOnly("org.apache.logging.log4j:log4j-core")
 
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:$equalsverifierVersion")
     testImplementation("org.assertj:assertj-core")
     testImplementation("org.awaitility:awaitility:$awaitilityVersion")
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -81,25 +83,5 @@ spotless {
     kotlinGradle {
         target("*.gradle.kts")
         ktlint()
-    }
-}
-
-// Gradle-таск, который после сборки покажет все сгенерированные классы.
-// Run by: ./gradlew clean build showGeneratedClasses
-tasks.register("showGeneratedClasses") {
-    group = "verification"
-    description = "Prints all generated Java classes from annotation processors"
-
-    doLast {
-        val generatedDir = file("$buildDir/generated/sources/annotationProcessor/java/main")
-        if (!generatedDir.exists()) {
-            println("No generated sources found.")
-            return@doLast
-        }
-
-        println("Generated Java classes:")
-        generatedDir.walkTopDown()
-            .filter { it.isFile && it.extension == "java" }
-            .forEach { println(it.relativeTo(projectDir)) }
     }
 }

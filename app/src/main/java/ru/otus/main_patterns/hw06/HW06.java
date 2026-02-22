@@ -2,7 +2,6 @@ package ru.otus.main_patterns.hw06;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.main_patterns.hw06.codegen.GenerateHello;
 
 /*
   Курс: Otus - Архитектура и шаблоны проектирования
@@ -88,7 +87,7 @@ import ru.otus.main_patterns.hw06.codegen.GenerateHello;
    вы переносите ошибки с этапа выполнения (Runtime) на этап компиляции (Compile-time).
    Если в вашей логике генерации что-то не так, проект просто не соберется, и вы сразу об этом узнаете.
 
-   Главные фишки: зачем он нужен?
+   Зачем он нужен?
     -Управление импортами: Вам не нужно думать, какие import добавить в начало файла.
        Вы просто указываете тип класса (например, java.util.List), и JavaPoet сам добавит нужный импорт или использует полное имя,
        если возникнет конфликт.
@@ -99,8 +98,9 @@ import ru.otus.main_patterns.hw06.codegen.GenerateHello;
 
      Генератор кода: /processor/src/main/java/ru/otus/main_patterns/hw06/codegen
      Сгенерированный код: app/build/generated/sources/annotationProcessor/java/main
+     Тесты: /app/src/test/java/ru/otus/main_patterns/hw06/
+
 */
-@GenerateHello
 public class HW06 {
 
   private static final Logger logger = LoggerFactory.getLogger(HW06.class);
