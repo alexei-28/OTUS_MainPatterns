@@ -1,2 +1,2 @@
 rootProject.name = "OTUS_MainPatterns"
-include("app")
+include("processor", "app")
