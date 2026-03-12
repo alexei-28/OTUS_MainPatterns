@@ -1,0 +1,90 @@
+# Help: https://github.com/pashky/restclient.el
+# More examples: https://github.com/pashky/restclient.el/blob/master/examples/httpbin
+# C-c C-v: same as C-c C-c, but doesn't switch focus to other window
+# C-c C-u: copy query under the cursor as a curl message
+# C-h e (view-echo-area-messages): print request header and body
+
+############################# Домашнее задание: Системы обмена сообщениями #############################
+
+# Some generic vars
+:BASE_URL = http://localhost:8080
+:uuid := (shell-command-to-string "uuidgen | tr -d '\\n'")
+
+
+# Header
+:REQUEST_HEADER = <<
+Content-Type: application/json
+
+# Create message with operationId move
+POST :BASE_URL/game/order
+:REQUEST_HEADER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "MOVE_STRAIGHT",
+  "operationArgs": {
+    "initialVelocity": 2
+  }
+}
+
+# Create messaget with operation id move rotate
+POST :BASE_URL/game/order
+:REQUEST_HEADER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "ROTATE",
+  "operationArgs": {
+    "radius": 10,
+    "angularVelocity": 4
+  }
+}
+
+# Create message with operation shoot
+POST :BASE_URL/game/order
+:REQUEST_HEADER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "SHOOT",
+  "operationArgs": {
+    "weaponId": "laser",
+    "direction": "up"
+  }
+}
+
+# Create message with operation burn fuel
+POST :BASE_URL/game/order
+:REQUEST_HEADER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-2",
+  "playerId": "player-3",
+  "operationId": "BURN_FUEL",
+  "operationArgs": {
+    "fuelAmount": 5
+  }
+}
+
+# Create message with operation teleportation
+POST :BASE_URL/game/order
+:REQUEST_HEADER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "TELEPORT",
+  "operationArgs": {
+    "x": 120,
+    "y": 45
+  }
+}
+
