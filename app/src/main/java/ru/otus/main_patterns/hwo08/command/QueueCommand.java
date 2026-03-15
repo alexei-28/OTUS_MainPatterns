@@ -13,6 +13,7 @@ public class QueueCommand implements Command {
   public QueueCommand(Command command) {
     this.command = command;
     this.queueService = QueueService.getInstance();
+    queueService.initAndStartServerQueue();
     logger.debug("Constructor QueueCommand, queueService: {}", queueService);
   }
 

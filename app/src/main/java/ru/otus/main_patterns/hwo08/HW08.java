@@ -106,6 +106,22 @@ import org.slf4j.LoggerFactory;
 
      Максимальная оценка за задание 10 баллов.
      Задание принимается, если было оценено не менее, чем в 7 баллов.
+
+     Пример HTTP POST запроса на создание команды ROTATE:
+     HTTP POST http://localhost:8080/game/order
+
+      {
+         "id" : "fd2f09e6-2b88-459e-82d8-71382a0f81a8",
+         "gameId": "game-1",
+         "playerId": "player-1",
+         "operationId": "ROTATE",
+         "operationArgs": {
+            "radius": 10,
+            "angularVelocity": 4
+         }
+       }
+
+       Примеры запросов здесь restclient.rc
 */
 public class HW08 {
   private static final Logger logger = LoggerFactory.getLogger(HW08.class);

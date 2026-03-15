@@ -1,0 +1,9 @@
+{
+  "id" : "64dd52d6-6179-4bad-b67d-c95f05001699",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "MOVE_STRAIGHT",
+  "operationArgs": {
+    "initialVelocity": 2
+  }
+}

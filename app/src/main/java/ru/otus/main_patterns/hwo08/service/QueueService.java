@@ -13,14 +13,14 @@ public class QueueService {
   private final BlockingQueue<Command> blockingQueue = new ArrayBlockingQueue<>(100);
   private static final Logger logger = LoggerFactory.getLogger(QueueService.class);
 
-  private QueueService() {
+  public static QueueService getInstance() {
+    return INSTANCE;
+  }
+
+  public void initAndStartServerQueue() {
     ServerQueueThread serverThread = new ServerQueueThread(blockingQueue);
     StartCommand startCommand = new StartCommand(serverThread);
     startCommand.execute();
-  }
-
-  public static QueueService getInstance() {
-    return INSTANCE;
   }
 
   public void addCommand(Command command) {
