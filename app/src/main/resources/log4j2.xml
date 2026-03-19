@@ -24,5 +24,8 @@
             <AppenderRef ref="Console"/>
             <!--<AppenderRef ref="File"/>-->
         </Root>
+        <Logger name="org.eclipse.jetty" level="OFF" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
     </Loggers>
 </Configuration>

@@ -1,0 +1,19 @@
+games:
+  game-1:
+    players:
+      player-1:
+        operations:
+          - MOVE_STRAIGHT
+          - ROTATE
+          - SHOOT
+      player-2:
+        operations:
+          - MOVE_STRAIGHT
+          - TELEPORT
+
+  game-2:
+    players:
+      player-3:
+        operations:
+          - ROTATE
+          - BURN_FUEL
