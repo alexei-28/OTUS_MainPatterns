@@ -1,0 +1,179 @@
+Узкие места и потенциальные проблемы масштабирования приложения и способы их решения
+
+1. API Gateway — точка концентрации нагрузки
+    Проблема:
+    -Все запросы идут через один вход
+    Возможны:
+    -перегрузка (CPU, latency)
+    -cascading failure (падает gateway → падает всё)
+    Решения:
+    -Horizontal scaling (N экземпляров за Load Balancer)
+    -Rate limiting (per user / IP)
+    -Caching (edge-level):
+    -турниры (GET /tournaments)
+    -Circuit Breaker (Resilience4j / Envoy)
+    Разделение:
+    -BFF (Backend For Frontend) для Web/Mobile
+
+2. Tournament Service — всплески нагрузки
+    Проблема:
+    Массовые события:
+    открытие регистрации
+    старт турнира
+    Пики: тысячи POST /join
+    Симптомы:
+    lock'и в БД
+    рост latency
+    падение сервиса
+    Решения:
+    - CQRS
+    Write → через очередь (Kafka)
+    Read → отдельная read-модель (Redis / Elastic)
+    - Async join
+    POST /join → enqueue → eventual consistency
+    - Anti-overbooking
+    optimistic locking
+    или Redis atomic counter
+    - Partitioning
+    турниры по shard'ам:
+    tournament_id % N
+
+3. Battle Service — CPU bottleneck №1
+    Проблема:
+    симуляции боёв = heavy CPU
+    возможны:
+    задержки
+    очередь боёв
+    Решения:
+    - Горизонтальное масштабирование
+    Stateless workers
+    Kubernetes HPA (по CPU)
+    - Очередь задач
+    BattleRequested → Queue → Worker → Result
+    - Разделение:
+    Battle Orchestrator (управление)
+    Battle Workers (исполнение)
+    - Приоритеты
+    live-бои > replay
+
+4. Message Broker (Kafka) — критическая зависимость
+    Проблема:
+    единая точка отказа (если плохо настроен)
+    lag → задержки уведомлений/рейтинга
+    Симптомы:
+    delayed notifications
+    inconsistent state
+    Решения:
+    - Partitioning
+    по userId / tournamentId
+    - Retention + DLQ
+    Dead Letter Queue для ошибок
+    - Idempotency
+    обработка повторных событий
+    - Exactly-once (по возможности)
+    или at-least-once + deduplication
+
+5. Notification Service — лавинообразные события
+    Проблема:
+    один event → тысячи уведомлений
+    Пример:
+    TournamentStarted → 10k пользователей
+    Решения:
+    - Fan-out через очередь
+    Kafka → worker pool
+    - Batch sending
+    группировка сообщений
+    - Каналы через адаптеры
+    Email / Push / WebSocket
+    - Rate limiting
+    защита от spam burst
+
+6. Rating Service — вычислительная нагрузка
+    Проблема:
+    -пересчёт рейтингов:
+    -после каждого боя
+    -после турнира
+    Симптомы:
+    -задержки
+    -блокировки
+    Решения:
+    -Event-driven перерасчёт
+    -async через Kafka
+     -Incremental updates
+    -не пересчитывать всё
+     -Кэширование
+    - топ игроков → Redis
+     - Precompute
+    -leaderboard обновляется периодически
+
+7. Database bottlenecks
+    Общая проблема:
+    -рост данных:
+    пользователи
+    -бои (очень много)
+    -турниры
+    User Service
+    Решения:
+    -Read replicas
+    -Redis cache (profile)
+    -JWT (уменьшение запросов)
+    Battle Service
+    Проблема:
+    replay хранение
+    Решения:
+    Object Storage (S3-like)
+    хранить:
+    -events вместо full state
+    Tournament Service
+    Решения:
+    -Sharding по tournament_id
+    индексы:
+    -status
+    -start_time
+
+8. Replay система (скрытая проблема)
+    Проблема:
+    GET /battles/{id}/replay
+    -heavy I/O + bandwidth
+    Решения:
+    -CDN для replay
+    хранить:
+    -event log (а не видео)
+    -lazy loading
+
+9. Consistency vs Availability
+    Проблема:
+    -Event-driven → eventual consistency
+    Примеры:
+    -рейтинг обновился не сразу
+    -уведомление пришло позже
+    Решения:
+    -Saga pattern (для критичных операций)
+    UI:
+    -"processing..."
+    -retry + compensation
+
+10. Cascading failures
+    Проблема:
+    -падение одного сервиса тянет другие
+    Решения:
+    -Circuit Breaker
+    -Bulkhead isolation
+    -Timeout + fallback
+
+11. Security bottlenecks
+    Проблема:
+    -authentication нагрузка
+    Решения:
+    -JWT + refresh tokens
+    -кеширование user sessions
+    -API Gateway auth layer
+
+12. Analytics Service — write-heavy
+    Проблема:
+    -огромный поток событий
+    Решения:
+    -отдельный pipeline:
+    -Kafka (Message broker)
+    -async ingestion
+    -без влияния на core flow

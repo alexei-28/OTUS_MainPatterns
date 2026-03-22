@@ -1,0 +1,93 @@
+Компоненты, к которым чаще всего будут меняться требования и применение OCP (Open-Closed Principle)
+
+1. Battle Service (логика боёв)
+    Почему меняется:
+    -новые режимы: рейтинговые, турниры
+    -балансировка (нерфы/баффы)
+    -новые механики: оружие, эффекты
+
+    OCP-решения:
+    -Strategy Pattern: инкапсуляция алгоритмов боёв
+    -BattleEngine
+     - ClassicBattleStrategy
+     - RankedBattleStrategy
+     - TournamentBattleStrategy
+     - CustomBattleStrategy
+    -Plugin-based архитектура: загружаемые модули (JAR/WASM/scripts) с конфигурацией
+     {"battleType": "ranked","strategy": "EloBattleStrategy"}
+    -Rule Engine: Drools / custom rules для гибкой логики
+
+2. Tournament Service (типы турниров)
+    Почему меняется:
+    -разные форматы: single elimination, double elimination, round robin
+    -кастомные турниры от пользователей
+
+    OCP-решения:
+    -Strategy + Factory для форматов турниров
+    -TournamentEngine
+     - SingleEliminationStrategy
+     - DoubleEliminationStrategy
+     - RoundRobinStrategy
+
+    -DSL / Config-driven турниры:
+      {"type":"custom","rules":{"maxPlayers":64,"rounds":"swiss"}}
+    -State Machine: управление состояниями турнира: CREATED → REGISTRATION → STARTED → FINISHED
+
+3. Rating Service (алгоритмы рейтинга)
+    Почему меняется:
+    -разные формулы: ELO, Glicko, кастомные
+    -рейтинги: игрока, турнира, команды
+
+    OCP-решения:
+    -Strategy Pattern: отдельные стратегии расчёта рейтинга
+    -RatingCalculator
+     - EloRatingStrategy
+     - GlickoRatingStrategy
+     - CustomRatingStrategy
+    -Versioning: rating_version = v1 | v2 | v3
+    -Feature flags: переключение алгоритмов без деплоя
+
+4. Notification Service (каналы)
+    Почему меняется:
+    - новые каналы: email, push, SMS, in-app, Telegram
+
+    OCP-решения:
+    -Adapter Pattern: отдельные адаптеры для каналов
+    -NotificationSender
+     - EmailAdapter
+     - SmsAdapter
+     - PushAdapter
+     - WebSocketAdapter
+
+    Routing rules: конфигурация, какие события в какие каналы отправлять
+    {"event":"BattleFinished","channels":["push","email"]}
+
+5. Game Client / API слой
+    Почему меняется:
+    -новые платформы: web, mobile, desktop
+    -изменения UX
+
+    OCP-решения:
+    BFF (Backend for Frontend): отдельные сервисы для платформ
+    BFF-Web
+    BFF-Mobile
+    API versioning: /api/v1, /api/v2
+
+6. Analytics Service
+    Почему меняется:
+    -новые метрики, отчёты
+
+    OCP-решения:
+    -Event schema evolution: Avro/Protobuf с версионированием
+
+7. Matchmaking (опционально)
+    Почему меняется:
+    -алгоритмы подбора: по рейтингу, времени ожидания, региону
+
+    OCP-решения:
+    -Strategy Pattern: различные алгоритмы подбора
+ 
+Итог:
+Эти компоненты меняются чаще всего из-за требований к новым форматам, алгоритмам и каналам.
+Применение OCP через стратегии, плагины, адаптеры, конфигурацию и версионирование позволяет расширять функциональность
+без изменения существующего кода, обеспечивая гибкость и устойчивость архитектуры
