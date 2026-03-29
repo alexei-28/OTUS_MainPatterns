@@ -1,0 +1,16 @@
+# Список зарегистрированных пользователей системы
+users:
+  player-1:
+    username: "player-1"
+    # SHA-256 хеш от пароля "player-1-pass"
+    password-hash: "21232ef466bfda2c6bb8526f4cef4f9ecff4095a9f416264de1d33d85eabe04b"
+
+  player-2:
+    username: "player-2"
+    # SHA-256 хеш от пароля "player-2-pass"
+    password-hash: "86cbfb10491416ec168111d348e45cc28915dee47e22acf780638d68e2beb82d"
+
+  player-3:
+    username: "player-3"
+    # SHA-256 хеш от пароля "player-3-pass"
+    password-hash: "cbf7f07364e6ba4fc99d30dfe086a9753562389ca9aa128350c67373da1635f3"

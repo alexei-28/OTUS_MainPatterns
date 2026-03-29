@@ -88,3 +88,87 @@ POST :BASE_URL/game/order
   }
 }
 
+
+############################# Домашнее задание#10 : Создать микросервис Авторизация пользователя #############################
+:AUTHSERVER_BASE_URL = http://localhost:8081
+:player-1-body := (json-encode `(("username" . "player-1") ("passwordHash" . ,(secure-hash 'sha256 "player-1-pass"))))
+:player-2-body := (json-encode `(("username" . "player-2") ("passwordHash" . ,(secure-hash 'sha256 "player-2-pass"))))
+:player-3-body := (json-encode `(("username" . "player-3") ("passwordHash" . ,(secure-hash 'sha256 "player-3-pass"))))
+:player-unknown-body := (json-encode `(("username" . "player-unknown") ("passwordHash" . ,(secure-hash 'sha256 "player-unknown-pass"))))
+
+##################### Send request to AuthServer #####################
+
+# Login by incorrect credential (missing password)
+POST :AUTHSERVER_BASE_URL/auth/login
+:REQUEST_HEADER
+
+{
+  "username" : "player-1",
+  "passwordHash" : ""	
+}
+
+# Login by incorrect credential (missing username)
+POST :AUTHSERVER_BASE_URL/auth/login
+:REQUEST_HEADER
+
+{
+  "passwordHash" : "some_pass"	
+}
+
+# Login by unknown player
+POST :AUTHSERVER_BASE_URL/auth/login
+:REQUEST_HEADER
+
+:player-unknown-body
+
+# Login by known player but incorrect password 
+POST :AUTHSERVER_BASE_URL/auth/login
+:REQUEST_HEADER
+
+:player-unknown-body
+
+
+# Login by correct credential
+POST :AUTHSERVER_BASE_URL/auth/login
+:REQUEST_HEADER
+
+:player-1-body
+
+
+##################### Send request to GameServer #####################
+:JWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwbGF5ZXItMSIsImV4cCI6MTc3NDgyMTQ1Mn0.zKjGvzHPmkjnB6Uv3pSgO7yxE1p_8zecbBiTSW-JNCE
+:REQUEST_HEADER_GAME_SERVER = <<
+Content-Type: application/json
+Authorization: Bearer :JWT
+
+# Create message with operationId move
+POST :BASE_URL/game/order
+:REQUEST_HEADER_GAME_SERVER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "MOVE_STRAIGHT",
+  "operationArgs": {
+    "initialVelocity": 2
+  }
+}
+
+# Create message with operationId teleport - not allowed to execute
+POST :BASE_URL/game/order
+:REQUEST_HEADER_GAME_SERVER
+
+{
+  "id" : ":uuid",
+  "gameId": "game-1",
+  "playerId": "player-1",
+  "operationId": "TELEPORT",
+  "operationArgs": {
+    "initialVelocity": 2
+  }
+}
+
+
+# Say hello to GameServer
+GET :BASE_URL/hello
