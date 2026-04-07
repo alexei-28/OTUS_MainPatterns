@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "ru.otus.main_patterns.hw10.authserver"
-version = "1.10.0-SNAPSHOT"
+version = "1.0.10"
 
 repositories {
     mavenCentral()
