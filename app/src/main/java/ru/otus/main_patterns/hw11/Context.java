@@ -1,0 +1,15 @@
+package ru.otus.main_patterns.hw11;
+
+import ru.otus.main_patterns.hw11.interfaces.State;
+
+public class Context {
+  private State state;
+
+  public State getState() {
+    return state;
+  }
+
+  public void setState(State state) {
+    this.state = state;
+  }
+}
