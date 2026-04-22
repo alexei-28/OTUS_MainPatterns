@@ -62,7 +62,7 @@
     lag → задержки уведомлений/рейтинга
     Симптомы:
     delayed notifications
-    inconsistent state
+    inconsistent commandState
     Решения:
     - Partitioning
     по userId / tournamentId
@@ -123,7 +123,7 @@
     Решения:
     Object Storage (S3-like)
     хранить:
-    -events вместо full state
+    -events вместо full commandState
     Tournament Service
     Решения:
     -Sharding по tournament_id

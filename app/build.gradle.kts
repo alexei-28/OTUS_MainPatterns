@@ -9,7 +9,7 @@ repositories {
 }
 
 group = "ru.otus.main_patterns"
-version = "1.0.10"
+version = "1.0.11-SNAPSHOT"
 
 application {
     mainClass.set("ru.otus.main_patterns.App")
